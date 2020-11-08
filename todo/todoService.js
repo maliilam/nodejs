@@ -5,8 +5,8 @@ const db = require('./db')
 let nextId = 100;
 const todos = [
     {
-        id: 99,
-        title: "first todo",
+        id: '99',
+        title:'first todo',
         completed: false
     }
 ]
@@ -19,7 +19,7 @@ const memoryData = {
     addTodo: todo => {
         const update = {
             ...todo,
-            id: nextId++
+            id: (nextId++).toString()
         }
         todos.push(update)
         return Promise.resolve(update)
