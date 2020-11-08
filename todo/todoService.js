@@ -13,7 +13,6 @@ const todos = [
 
 const memoryData = {
     getTodos: () => {
-        console.log("mem get todos", todos)
         return Promise.resolve(todos)
     },
     addTodo: todo => {
@@ -45,7 +44,9 @@ const memoryData = {
 }
 
 const dbData = {
-    getTodos: db.getTodos
+    getTodos: db.getTodos,
+    addTodo: db.addTodo,
+    updateTodo: db.updateTodo
 }
 
-module.exports = memoryData
+module.exports = dbData

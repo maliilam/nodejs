@@ -1,12 +1,11 @@
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectID } = require('mongodb')
 
 let db = null
 
-const getDB = async () => {
+const initDB = async () => {
     if (db === null || !db.serverConfig.isConnected()) {
         await connectDB()
     }
-    return db
 }
 
 const connectDB = async () => {
@@ -19,13 +18,38 @@ const connectDB = async () => {
 
 const getTodos = async () => {
     try {
-        await connectDB()
-        return await db.collection("todo").find({}).toArray()
+        await initDB()
+        const todos = await db.collection("todo").find({}).toArray()
+        return todos.map(todo => ({ ...todo, id: todo._id }))
     } catch(e) {
         console.error(e)
-    }    
+    }
+}
+
+const addTodo = async todo => {
+    try {
+        await initDB()
+        const added = await db.collection("todo").insertOne(todo)
+        return { ...added, id: new ObjectID(added._id) }
+    } catch(e) {
+        console.error(e)
+    }
+}
+
+const updateTodo = async todo => {
+    try {
+        await initDB()
+        const { id, ...update } = todo
+        Object.keys(update).filter(k => update[k] === undefined).forEach(k => delete update[k])
+        const updated = await db.collection("todo").updateOne({ _id: new ObjectID(id) }, { $set: update})
+        return todo
+    } catch (e) {
+        console.error(e)
+    }
 }
 
 module.exports = {
-    getTodos: getTodos
+    getTodos: getTodos,
+    addTodo: addTodo,
+    updateTodo: updateTodo
 }
