@@ -19,13 +19,14 @@ router.post(baseUrl, (req, res) => {
 router.put(baseUrl + '/:id', (req, res) => {
     const id = req.params.id
     const { title, completed } = req.body
-    res.json({ id, title, completed })
+    service.updateTodo({ id, title, completed })
+        .then(todo => res.json(todo))
 })
 
 router.delete(baseUrl + '/:id', (req, res) => {
     const id = req.params.id
-    const { title, completed } = req.body
-    res.json({ id, title, completed })
+    service.deleteTodo(id)
+        .then(todo => res.json(todo))
 })
 
 module.exports = router
