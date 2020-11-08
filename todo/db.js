@@ -20,7 +20,7 @@ const connectDB = async () => {
 const getTodos = async () => {
     try {
         await connectDB()
-        console.log("getdb:", await db.collection("todo").find({}).toArray())
+        return await db.collection("todo").find({}).toArray()
         
         //return getDB().collection("todo").find({}).toArray()
     } catch(e) {
