@@ -27,11 +27,14 @@ const memoryData = {
     updateTodo: todo => {
         const index = todos.findIndex( td => td.id === todo.id)
         if (index > -1) {
-            const update = { ...todos[index], ...todo}
+            const update = { ...todos[index] }
+            Object.keys(todo)
+                .filter(k => todo[k] !== undefined)
+                .forEach(k => update[k] = todo[k])
             todos.splice(index, 1, update)   
             return Promise.resolve(update)
         }
-        return Promise.resolve({})
+        return Promise.resolve(todo)
     },
     deleteTodo: id => {
         const index = todos.findIndex( td => td.id === id)
