@@ -46,7 +46,8 @@ const memoryData = {
 const dbData = {
     getTodos: db.getTodos,
     addTodo: db.addTodo,
-    updateTodo: db.updateTodo
+    updateTodo: db.updateTodo,
+    deleteTodo: db.deleteTodo
 }
 
 module.exports = dbData

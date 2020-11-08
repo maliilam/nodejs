@@ -29,8 +29,8 @@ const getTodos = async () => {
 const addTodo = async todo => {
     try {
         await initDB()
-        const added = await db.collection("todo").insertOne(todo)
-        return { ...added, id: new ObjectID(added._id) }
+        const result = await db.collection("todo").insertOne(todo)
+        return { ...todo, id: new ObjectID(result._id) }
     } catch(e) {
         console.error(e)
     }
@@ -41,8 +41,18 @@ const updateTodo = async todo => {
         await initDB()
         const { id, ...update } = todo
         Object.keys(update).filter(k => update[k] === undefined).forEach(k => delete update[k])
-        const updated = await db.collection("todo").updateOne({ _id: new ObjectID(id) }, { $set: update})
+        await db.collection("todo").updateOne({ _id: new ObjectID(id) }, { $set: update})
         return todo
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+const deleteTodo = async id => {
+    try {
+        await initDB()
+        await db.collection("todo").deleteOne({ _id: new ObjectID(id) })
+        return { id }
     } catch (e) {
         console.error(e)
     }
@@ -51,5 +61,6 @@ const updateTodo = async todo => {
 module.exports = {
     getTodos: getTodos,
     addTodo: addTodo,
-    updateTodo: updateTodo
+    updateTodo: updateTodo,
+    deleteTodo: deleteTodo
 }
