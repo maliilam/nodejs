@@ -5,14 +5,15 @@ const router = express.Router()
 const baseUrl = '/api/todos'
 const todos = []
 let nextId = 100;
-router.get(baseUrl, (req, res) => {
+router.get(baseUrl, (req, res) => 
     service.getTodos()
         .then(todos => res.json(todos))
-})
+)
 
 router.post(baseUrl, (req, res) => {
     const { title, completed } = req.body
-    res.json({ id : nextId++, title, completed })
+    service.addTodo({ title, completed })
+        .then(todo => res.json(todo))
 })
 
 router.put(baseUrl + '/:id', (req, res) => {

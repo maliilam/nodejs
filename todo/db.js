@@ -21,8 +21,6 @@ const getTodos = async () => {
     try {
         await connectDB()
         return await db.collection("todo").find({}).toArray()
-        
-        //return getDB().collection("todo").find({}).toArray()
     } catch(e) {
         console.error(e)
     }    
